@@ -1,7 +1,7 @@
-import { Inter } from "@next/font/google";
 import Head from "next/head";
-
-const inter = Inter({ subsets: ["latin"] });
+import Main from "../components/Main";
+import Preview from "../components/Preview";
+import SideBar from "../components/SideBar";
 
 export default function Home() {
   return (
@@ -12,8 +12,12 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <h1>My Notes</h1>
+      <main className="bg-slate-400 p-5">
+        <div className="flex relative w-[calc(100vw_-_40px)] h-[calc(100vh_-_40px)] mx-auto h-50 bg-teal-100 rounded-2xl">
+          <SideBar />
+          <Preview />
+          <Main />
+        </div>
       </main>
     </>
   );
