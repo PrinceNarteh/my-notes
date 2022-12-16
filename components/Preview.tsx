@@ -1,8 +1,14 @@
 import React from "react";
 
-const Preview = () => {
+const Preview = ({ open }: { open: boolean }) => {
   return (
-    <div className="h-[calc(100vh_-_40px)] ml-72 w-96 bg-gray-800">Preview</div>
+    <div
+      className={`h-[calc(100vh_-_40px)] w-96 bg-gray-800 duration-300 ${
+        open ? "ml-72" : "ml-10"
+      }`}
+    >
+      Preview
+    </div>
   );
 };
 
