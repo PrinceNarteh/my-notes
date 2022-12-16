@@ -1,14 +1,12 @@
-import React from "react";
-import { Dispatch, SetStateAction } from "react";
+import Image from "next/image";
+import React, { Dispatch, SetStateAction } from "react";
+import { BiHighlight } from "react-icons/bi";
+import { BsClock } from "react-icons/bs";
+import { FaTasks } from "react-icons/fa";
 import { FiBell } from "react-icons/fi";
 import { GiNotebook } from "react-icons/gi";
 import { MdArrowBackIosNew, MdOutlineFavoriteBorder } from "react-icons/md";
-import { TfiReload } from "react-icons/tfi";
-import { FaTasks } from "react-icons/fa";
-import { BiHighlight } from "react-icons/bi";
-import { BsClock } from "react-icons/bs";
 import user from "../assets/images/user.jpg";
-import Image from "next/image";
 
 const links = [
   {
@@ -52,7 +50,7 @@ const SideBar = ({
     >
       <div className="h-5">
         <MdArrowBackIosNew
-          className={`absolute  cursor-pointer duration-300 ${
+          className={`absolute w-5 h-5 rounded-full hover:bg-gray-800 hover:p-1 cursor-pointer duration-300 ${
             open ? "rotate-0 right-3" : "rotate-180 right-6"
           }`}
           onClick={() => setOpen(!open)}
@@ -79,7 +77,7 @@ const SideBar = ({
                   {React.createElement(link.icons)}
                 </div>
                 <h3
-                  style={{ transitionDelay: `${index + 1}00ms` }}
+                  style={{ transitionDelay: `${open && index + 1 + "00ms"}` }}
                   className={`whitespace-pre ${
                     !open && "translate-x-10 opacity-0 invisible"
                   } duration-300`}
