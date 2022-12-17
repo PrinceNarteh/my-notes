@@ -16,7 +16,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="bg-slate-400 p-5">
-        <div className="flex relative w-[calc(100vw_-_40px)] h-[calc(100vh_-_40px)] mx-auto h-50 bg-teal-100 rounded-2xl">
+        <div className="flex relative w-[calc(100vw_-_40px)] h-[calc(100vh_-_40px)] mx-auto h-50 bg-white rounded-2xl">
           <SideBar open={open} setOpen={setOpen} />
           <Preview open={open} />
           <Main />
