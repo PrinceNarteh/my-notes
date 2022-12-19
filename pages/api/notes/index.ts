@@ -1,26 +1,21 @@
+import Note from "../../../models/Note";
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import dbConnect from "../../../config/dbConnect";
 
-const getNotes = (req: NextApiRequest, res: NextApiResponse) => {
-  res.status(200).json({ message: "All Notes" });
-};
-
-const createNote = (req: NextApiRequest, res: NextApiResponse) => {
-  res.status(201).json({ message: "Note Created" });
-};
-
-const handler: NextApiHandler = (req: NextApiRequest, res: NextApiResponse) => {
+const handler: NextApiHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
+  await dbConnect();
   const method = req.method;
 
-  switch (method) {
-    case "GET":
-      getNotes(req, res);
-      break;
-    case "POST":
-      createNote(req, res);
-      break;
-    default:
-      res.status(405).json({ error: "Only GET and POST methods are allowed" });
-      break;
+  if (method === "GET") {
+    const notes = await Note.find({});
+    res.status(200).json({ notes });
+  } else if (method === "POST") {
+    res.status(201).json({ message: "Note Created" });
+  } else {
+    res.status(405).json({ error: "Only GET and POST methods are allowed." });
   }
 };
 
