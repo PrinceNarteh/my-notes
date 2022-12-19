@@ -14,12 +14,13 @@ if (!MONGODB_URI) {
  * during API Route usage.
  */
 let cached = global.mongoose;
+let isConnected: boolean = false;
 
 if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }
 
-async function dbConnect() {
+async function connect() {
   if (cached.conn) {
     return cached.conn;
   }
@@ -36,6 +37,7 @@ async function dbConnect() {
 
   try {
     cached.conn = await cached.promise;
+    isConnected = true;
   } catch (e) {
     cached.promise = null;
     throw e;
@@ -44,4 +46,16 @@ async function dbConnect() {
   return cached.conn;
 }
 
-export default dbConnect;
+async function disconnect() {
+  if (isConnected) {
+    if (process.env.NODE_ENV === "production") {
+      await mongoose.disconnect();
+      isConnected = false;
+    } else {
+      console.log("not disconnected");
+    }
+  }
+}
+
+const db = { connect, disconnect };
+export default db;
