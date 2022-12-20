@@ -37,8 +37,8 @@ const formats = [
   "background",
 ];
 
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 const Form = () => {
-  const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
   const [note, setNote] = useState({
     title: "",
     description: "",
