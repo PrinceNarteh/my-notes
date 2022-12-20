@@ -44,7 +44,7 @@ const SideBar = ({
 }) => {
   return (
     <div
-      className={`fixed h-[calc(100vh_-_40px)] w-72 bg-gray-900 text-white rounded-l-2xl p-5 duration-300 ${
+      className={`absolute h-[calc(100vh_-_40px)] w-72 bg-gray-900 text-white rounded-l-2xl p-5 duration-300 ${
         open ? "w-72" : "w-16"
       }`}
     >
