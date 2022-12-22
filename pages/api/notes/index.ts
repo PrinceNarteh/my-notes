@@ -11,9 +11,15 @@ const getNotes = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const createNote = async (req: NextApiRequest, res: NextApiResponse) => {
   await db.connect();
-  const notes = await Note.find({});
-  await db.disconnect();
-  res.status(200).json({ notes });
+  try {
+    console.log(req.body);
+    const note = await Note.create(req.body);
+    res.status(200).json({ note });
+  } catch (error) {
+    res.status(400).json({ error });
+  } finally {
+    await db.disconnect();
+  }
 };
 
 const handler: NextApiHandler = async (

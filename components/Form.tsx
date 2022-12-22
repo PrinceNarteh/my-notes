@@ -1,6 +1,8 @@
 import dynamic from "next/dynamic";
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import "react-quill/dist/quill.snow.css";
+import { httpClient } from "../services/httpClient";
+import axios from "axios";
 
 const modules = {
   toolbar: [
@@ -41,23 +43,33 @@ const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 const Form = () => {
   const [note, setNote] = useState({
     title: "",
-    description: "",
+    content: "",
   });
+  const [error, setError] = useState("");
 
   const handleQuillChange = (value: string) =>
     setNote((prevState) => ({
       ...prevState,
-      description: value,
+      content: value,
     }));
 
-  console.log(note);
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("http://localhost:3000/api/notes", note);
+      console.log(res);
+    } catch (error: any) {
+      console.log(error);
+      setError(error.message);
+    }
+  };
 
   return (
-    <div className="space-y-4">
+    <div>
       <h3 className="text-center text-3xl mt-5 font-semibold text-blue-800">
         Add Note
       </h3>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="title" className="block text-xl mb-3">
             Title
@@ -66,7 +78,7 @@ const Form = () => {
             type="text"
             id="title"
             name="title"
-            className="border border-gray-500 outline-none w-full rounded-md px-2 py-1"
+            className="border border-gray-500 outline-none w-full rounded-md px-2 py-1 mb-5"
             value={note.title}
             onChange={(e) =>
               setNote({
@@ -83,8 +95,8 @@ const Form = () => {
           <ReactQuill
             key="quill"
             theme="snow"
-            style={{ minHeight: "300px", height: "200px" }}
-            defaultValue={note.description}
+            style={{ maxHeight: "300px", height: "300px" }}
+            defaultValue={note.content}
             onChange={(value) => handleQuillChange(value)}
             modules={modules}
             formats={formats}
