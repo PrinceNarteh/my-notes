@@ -36,7 +36,9 @@ const Preview = ({ open }: { open: boolean }) => {
       <h2 className="font-bold text-gray-500 mt-5 ml-6 text-2xl">All Notes</h2>
 
       <div>
-        <PreviewCard />
+        {notesSelector.notes?.map((note, index) => (
+          <PreviewCard key={index} />
+        ))}
         <PreviewCard />
         <PreviewCard />
         <PreviewCard />
