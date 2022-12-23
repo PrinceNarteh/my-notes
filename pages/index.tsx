@@ -1,12 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Head from "next/head";
 import Main from "../components/Main";
 import Preview from "../components/Preview";
 import SideBar from "../components/SideBar";
+import { useDispatch } from "react-redux";
+import { getNotes } from "../services/notes";
+import { setNotes } from "../state/features/notes/noteSlice";
 
 export default function Home() {
   const [open, setOpen] = useState(true);
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    const notes = async () => {
+      const res = await getNotes();
+      dispatch(setNotes(res));
+    };
+    notes();
+  }, []);
   return (
     <>
       <Head>

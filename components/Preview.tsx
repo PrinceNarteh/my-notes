@@ -1,9 +1,15 @@
 import React from "react";
 import { RiSearchLine } from "react-icons/ri";
+import { useSelector } from "react-redux";
 import { IoMdAdd } from "react-icons/io";
 import PreviewCard from "./PreviewCard";
+import { RootState } from "../state/store";
 
 const Preview = ({ open }: { open: boolean }) => {
+  const notesSelector = useSelector((state: RootState) => state.note);
+
+  console.log(notesSelector.notes);
+
   return (
     <div
       className={`h-[calc(100vh_-_40px)] w-96 bg-gray-800 p-4 text-white duration-300 ${
