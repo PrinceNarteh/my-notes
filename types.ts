@@ -1,5 +1,5 @@
-export interface Note {
-  _id: string;
+export interface INote {
+  _id?: string | null;
   title: string;
   content: string;
   createdAt: string;

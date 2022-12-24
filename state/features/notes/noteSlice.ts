@@ -1,10 +1,10 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
-import { Note } from "../../../types";
+import { INote } from "../../../types";
 import { RootState } from "../../store";
 
 export interface NoteState {
-  notes: Note[];
+  notes: INote[];
 }
 
 const initialState: NoteState = {
@@ -15,7 +15,7 @@ export const noteSlice = createSlice({
   name: "note",
   initialState,
   reducers: {
-    setNotes: (state, action: PayloadAction<Note[]>) => {
+    setNotes: (state, action: PayloadAction<INote[]>) => {
       state.notes = action.payload;
     },
   },

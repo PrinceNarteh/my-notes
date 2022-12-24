@@ -3,6 +3,7 @@ import React, { FormEvent, useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import { httpClient } from "../services/httpClient";
 import axios from "axios";
+import { INote } from "../types";
 
 const modules = {
   toolbar: [
@@ -40,10 +41,11 @@ const formats = [
 ];
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
-const Form = () => {
-  const [note, setNote] = useState({
-    title: "",
-    content: "",
+const Form = ({ selectedNote }: { selectedNote?: INote }) => {
+  let [note, setNote] = useState({
+    _id: selectedNote?._id || null,
+    title: selectedNote?.title || "",
+    content: selectedNote?.content || "",
   });
   const [error, setError] = useState("");
 
@@ -56,7 +58,12 @@ const Form = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:3000/api/notes", note);
+      let res;
+      if (note._id) {
+        res = await axios.patch("http://localhost:3000/api/notes", note);
+      } else {
+        res = await axios.post("http://localhost:3000/api/notes", note);
+      }
       console.log(res);
     } catch (error: any) {
       console.log(error);
@@ -67,7 +74,7 @@ const Form = () => {
   return (
     <div>
       <h3 className="text-center text-3xl mt-5 font-semibold text-blue-800">
-        Add Note
+        {note._id ? "Edit" : "Add"} Note
       </h3>
       <form onSubmit={handleSubmit}>
         <div>
@@ -107,7 +114,7 @@ const Form = () => {
             type="submit"
             className="bg-blue-500 text-white px-4 py-2 rounded-full float-right"
           >
-            Add Note
+            {note._id ? "Update" : "Add"} Note
           </button>
         </div>
       </form>
