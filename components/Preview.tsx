@@ -37,11 +37,8 @@ const Preview = ({ open }: { open: boolean }) => {
 
       <div>
         {notesSelector.notes?.map((note, index) => (
-          <PreviewCard key={index} />
+          <PreviewCard key={index} note={note} />
         ))}
-        <PreviewCard />
-        <PreviewCard />
-        <PreviewCard />
       </div>
     </div>
   );

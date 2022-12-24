@@ -4,7 +4,7 @@ import Note from "../../../models/Note";
 
 const getNotes = async (req: NextApiRequest, res: NextApiResponse) => {
   await db.connect();
-  const notes = await Note.find({});
+  const notes = await Note.find({}).sort({ _id: -1 });
   await db.disconnect();
   res.status(200).json({ notes });
 };
