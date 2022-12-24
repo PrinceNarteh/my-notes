@@ -4,11 +4,10 @@ import { useSelector } from "react-redux";
 import { IoMdAdd } from "react-icons/io";
 import PreviewCard from "./PreviewCard";
 import { RootState } from "../state/store";
+import { selectAllNotes } from "../state/features/notes/noteSlice";
 
 const Preview = ({ open }: { open: boolean }) => {
-  const notesSelector = useSelector((state: RootState) => state.note);
-
-  console.log(notesSelector.notes);
+  const notesSelector = useSelector(selectAllNotes);
 
   return (
     <div
