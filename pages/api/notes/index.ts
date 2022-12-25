@@ -12,10 +12,13 @@ const getNotes = async (req: NextApiRequest, res: NextApiResponse) => {
 const createNote = async (req: NextApiRequest, res: NextApiResponse) => {
   await db.connect();
   try {
-    console.log(req.body);
     const note = await Note.create(req.body);
     res.status(200).json({ note });
-  } catch (error) {
+  } catch (error: any) {
+    const errorMessage = error.message.replace("Note validation failed: ", "");
+    const errorArr = errorMessage
+      .split(", ")
+      .map((err: string) => err.split(": ")[1]);
     res.status(400).json({ error });
   } finally {
     await db.disconnect();
