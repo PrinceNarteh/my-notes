@@ -1,6 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import db from "../../../config/dbConnect";
 import Note from "../../../models/Note";
+import { formatMongoDBErrors } from "../../../utils/formatMongoDBErros";
 
 const getNotes = async (req: NextApiRequest, res: NextApiResponse) => {
   await db.connect();
@@ -15,11 +16,8 @@ const createNote = async (req: NextApiRequest, res: NextApiResponse) => {
     const note = await Note.create(req.body);
     res.status(200).json({ note });
   } catch (error: any) {
-    const errorMessage = error.message.replace("Note validation failed: ", "");
-    const errorArr = errorMessage
-      .split(", ")
-      .map((err: string) => err.split(": ")[1]);
-    res.status(400).json({ error });
+    const errorArr = formatMongoDBErrors(error, "Note");
+    res.status(400).json({ errorArr });
   } finally {
     await db.disconnect();
   }
