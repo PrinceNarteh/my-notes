@@ -1,18 +1,29 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import { useState } from "react";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { FaTrash } from "react-icons/fa";
+import { FiEdit } from "react-icons/fi";
 import { useSelector } from "react-redux";
 import Layout from "../../../components/Layout";
+import { deleteNote } from "../../../services/notes";
 import { selectAllNotes } from "../../../state/features/notes/noteSlice";
-import { FaTrash } from "react-icons/fa";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { FiEdit } from "react-icons/fi";
-import Link from "next/link";
 
 const NoteDetails = () => {
-  const { query } = useRouter();
+  const router = useRouter();
   const allNotes = useSelector(selectAllNotes);
+  const [error, setError] = useState("");
 
-  const note = allNotes.notes.find((note) => note._id === query.noteId);
+  const note = allNotes.notes.find((note) => note._id === router.query.noteId);
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteNote(id);
+      router.push("/");
+    } catch (error: any) {
+      setError(error.message);
+    }
+  };
 
   if (!note) {
     <Layout>
@@ -36,7 +47,10 @@ const NoteDetails = () => {
                   <FiEdit className="text-white font-bold" />
                 </div>
               </Link>
-              <div className="p-4 bg-blue-500 rounded-full duration-300 hover:scale-110 ">
+              <div
+                className="p-4 bg-blue-500 rounded-full duration-300 hover:scale-110"
+                onClick={() => handleDelete(note._id!)}
+              >
                 <FaTrash className="text-white" />
               </div>
             </div>

@@ -11,7 +11,7 @@ const Preview = ({ open }: { open: boolean }) => {
 
   return (
     <div
-      className={`h-[calc(100vh_-_40px)] w-96 bg-gray-800 p-4 text-white duration-300 ${
+      className={`h-[calc(100vh_-_40px)] overflow-y-auto w-96 bg-gray-800 p-4 text-white duration-300 ${
         open ? "ml-72" : "ml-16"
       }`}
     >
