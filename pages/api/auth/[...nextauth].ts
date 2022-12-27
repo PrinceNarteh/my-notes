@@ -3,6 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import db from "../../../config/dbConnect";
 import User from "../../../models/User";
 import bcrypt from "bcryptjs";
+import { loginDto } from "../../../utils/validation";
 
 export default NextAuth({
   providers: [
@@ -11,11 +12,14 @@ export default NextAuth({
         email: { type: "text" },
         password: { type: "password" },
       },
+
       async authorize(credentials, req) {
-        const { email, password } = credentials as {
-          email: string;
-          password: string;
-        };
+        const result = loginDto.safeParse(credentials);
+        if (!result.success) {
+          throw new Error("Please provide all info.");
+        }
+        const { email, password } = result.data;
+
         await db.connect();
         const user = await User.findOne({ email });
         await db.disconnect();

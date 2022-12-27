@@ -1,15 +1,21 @@
 import React from "react";
 
-interface IInputField {
+type IInputField = {
   label: string;
   type?: string;
-}
+  name: string;
+} & React.HTMLAttributes<HTMLInputElement>;
 
-const InputField = ({ label, type = "text" }: IInputField) => {
+const InputField = ({ label, name, type = "text", ...props }: IInputField) => {
   return (
     <div className="my-1 flex-1">
       <label className="block mb-1">{label}</label>
-      <input type={type} className="border w-full p-2 outline-none rounded" />
+      <input
+        name={name}
+        type={type}
+        className="border w-full p-2 outline-none rounded"
+        {...props}
+      />
     </div>
   );
 };

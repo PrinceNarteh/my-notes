@@ -1,28 +1,9 @@
 import bcrypt from "bcryptjs";
 import { NextApiRequest, NextApiResponse } from "next";
-import { z } from "zod";
 
 import db from "../../../config/dbConnect";
 import User from "../../../models/User";
-
-const createUserDto = z.object({
-  firstName: z.string({
-    required_error: "First name is required",
-  }),
-  lastName: z.string({
-    required_error: "Last name is required",
-  }),
-  email: z
-    .string({
-      required_error: "Email is required",
-    })
-    .email("Invalid email address"),
-  password: z
-    .string({
-      required_error: "Password is required",
-    })
-    .min(5, "Password should be 5 or more characters"),
-});
+import { createUserDto } from "../../../utils/validation";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {

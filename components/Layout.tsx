@@ -1,23 +1,24 @@
-import { useState, useEffect } from "react";
 import Head from "next/head";
+import { useState } from "react";
 import Main from "../components/Main";
 import Preview from "../components/Preview";
 import SideBar from "../components/SideBar";
-import { useDispatch } from "react-redux";
-import { getNotes } from "../services/notes";
-import { setNotes } from "../state/features/notes/noteSlice";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
-export default function Home({ children }: { children: React.ReactNode }) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(true);
-  const dispatch = useDispatch();
+  const { data: session, status } = useSession({ required: true });
+  const router = useRouter();
 
-  useEffect(() => {
-    const notes = async () => {
-      const res = await getNotes();
-      dispatch(setNotes(res));
-    };
-    notes();
-  }, []);
+  console.log(session);
+
+  if (status === "loading") {
+    console.log("Loading...");
+
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       <Head>
