@@ -1,7 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import db from "../../../config/dbConnect";
 import Note from "../../../models/Note";
-import { formatMongoDBErrors } from "../../../utils/formatMongoDBErros";
+import { formatMongoDBErrors } from "../../../utils/formatMongoDBErrors";
 
 const getNotes = async (req: NextApiRequest, res: NextApiResponse) => {
   await db.connect();
