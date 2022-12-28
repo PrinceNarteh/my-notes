@@ -1,10 +1,41 @@
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
 import register from "../../assets/images/register.jpg";
 import InputField from "../../components/InputField";
+import { httpClient } from "../../services/httpClient";
 
 const Register = () => {
+  const [state, setState] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [errors, setErrors] = useState<string[]>([]);
+  const router = useRouter();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setState({ ...state, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (state.password !== state.confirmPassword) {
+      return setErrors(["Passwords do not match"]);
+    }
+
+    try {
+      const res = await httpClient.post("/auth/register", state);
+      router.push("/auth/login");
+    } catch (error: any) {
+      setErrors(error.response.data.errors);
+    }
+  };
+
   return (
     <div className="h-screen w-full bg-white flex justify-center items-center px-5">
       <div className="bg-gray-100 max-w-4xl mx-auto w-full min-h-96 grid grid-cols-1 md:grid-cols-3 shadow-lg rounded-md overflow-hidden p-5">
@@ -21,14 +52,48 @@ const Register = () => {
           <p className="my-2 text-slate-500">
             Provide your details for get registered.
           </p>
-          <form>
+
+          {errors.length > 0 && (
+            <ul className="my-2 list-disc ml-10">
+              {errors.map((error, idx) => (
+                <li key={idx} className="text-red-500">
+                  {error}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <form onSubmit={handleSubmit}>
             <div className="flex flex-col md:flex-row gap-2 ">
-              <InputField label="First Name" />
-              <InputField label="Last Name" />
+              <InputField
+                label="First Name"
+                name="firstName"
+                onChange={handleChange}
+              />
+              <InputField
+                label="Last Name"
+                name="lastName"
+                onChange={handleChange}
+              />
             </div>
-            <InputField label="Email" type="email" />
-            <InputField label="Password" type="password" />
-            <InputField label="Confirm Password" type="password" />
+            <InputField
+              label="Email"
+              type="email"
+              name="email"
+              onChange={handleChange}
+            />
+            <InputField
+              label="Password"
+              type="password"
+              name="password"
+              onChange={handleChange}
+            />
+            <InputField
+              label="Confirm Password"
+              type="password"
+              name="confirmPassword"
+              onChange={handleChange}
+            />
             <button className="w-full bg-slate-700 text-white py-2 rounded mt-2">
               Register
             </button>
