@@ -6,7 +6,8 @@ import { FaTasks } from "react-icons/fa";
 import { FiBell } from "react-icons/fi";
 import { GiNotebook } from "react-icons/gi";
 import { MdArrowBackIosNew, MdOutlineFavoriteBorder } from "react-icons/md";
-import user from "../assets/images/user.jpg";
+import { TbLogout } from "react-icons/tb";
+import { signOut } from "next-auth/react";
 
 const links = [
   {
@@ -88,24 +89,23 @@ const SideBar = ({
             ))}
           </ul>
         </div>
-        <div className=" flex items-center gap-2">
-          <div className="shrink-0">
-            <Image
-              src={user}
-              alt=""
-              className={`${
-                open ? "w-10 h-10" : "w-6 h-6"
-              } rounded-full duration-500`}
-            />
+        <div
+          className={`py-1.5 rounded-md flex items-center gap-3.5 cursor-pointer ${
+            open && "pl-3 hover:bg-blue-500"
+          } duration-300`}
+          onClick={() => signOut({ callbackUrl: "/auth/login" })}
+        >
+          <div className={`${open ? "text-lg" : "text-xl"} duration-300`}>
+            <TbLogout />
           </div>
-          <div
-            className={`${
+          <h3
+            style={{ transitionDelay: `${1 + "00ms"}` }}
+            className={`whitespace-pre ${
               !open && "translate-x-10 opacity-0 invisible"
-            } shrink-0 duration-300`}
+            } duration-300`}
           >
-            <h3>Thomas Williams</h3>
-            <h6 className="text-gray-500 text-sm">Admin</h6>
-          </div>
+            Logout
+          </h3>
         </div>
       </div>
     </div>
