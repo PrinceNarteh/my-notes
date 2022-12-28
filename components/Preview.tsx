@@ -1,22 +1,12 @@
-import { useEffect } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { RiSearchLine } from "react-icons/ri";
-import { useDispatch, useSelector } from "react-redux";
-import { getNotes } from "../services/notes";
-import { selectAllNotes, setNotes } from "../state/features/notes/noteSlice";
+import { useSelector } from "react-redux";
+import { selectAllNotes } from "../state/features/notes/noteSlice";
 import PreviewCard from "./PreviewCard";
 
 const Preview = ({ open }: { open: boolean }) => {
   const notesSelector = useSelector(selectAllNotes);
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    const notes = async () => {
-      const res = await getNotes();
-      dispatch(setNotes(res));
-    };
-    notes();
-  }, []);
   return (
     <div
       className={`h-[calc(100vh_-_40px)] overflow-y-auto w-96 bg-gray-800 p-4 text-white duration-300 ${

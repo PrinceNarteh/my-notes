@@ -1,17 +1,13 @@
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useState } from "react";
 import Main from "../components/Main";
 import Preview from "../components/Preview";
 import SideBar from "../components/SideBar";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(true);
   const { data: session, status } = useSession({ required: true });
-  const router = useRouter();
-
-  console.log(session);
 
   if (status === "loading") {
     console.log("Loading...");
@@ -37,3 +33,4 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     </>
   );
 }
+Layout.auth = true;

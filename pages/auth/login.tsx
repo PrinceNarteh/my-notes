@@ -1,10 +1,11 @@
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
+
 import login from "../../assets/images/login.jpg";
 import InputField from "../../components/InputField";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/router";
 
 const Login = () => {
   const [data, setData] = useState({

@@ -60,5 +60,5 @@ const NoteDetails = () => {
     );
   }
 };
-
+NoteDetails.auth = true;
 export default NoteDetails;

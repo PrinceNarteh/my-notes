@@ -17,4 +17,5 @@ const EditNote = () => {
   );
 };
 
+EditNote.auth = true;
 export default EditNote;
