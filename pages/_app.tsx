@@ -4,6 +4,7 @@ import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
 import { store } from "../state/store";
 import "../styles/globals.css";
+import "react-toastify/dist/ReactToastify.css";
 
 type CustomAppProps = AppProps & {
   Component: NextComponentType & { auth?: boolean };

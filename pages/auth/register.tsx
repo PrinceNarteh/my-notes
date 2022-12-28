@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import register from "../../assets/images/register.jpg";
 import InputField from "../../components/InputField";
 import { httpClient } from "../../services/httpClient";
+import { toast, ToastContainer } from "react-toastify";
 
 const Register = () => {
   const [state, setState] = useState({
@@ -29,7 +30,8 @@ const Register = () => {
     }
 
     try {
-      const res = await httpClient.post("/auth/register", state);
+      await httpClient.post("/auth/register", state);
+      toast.success("Registration successful");
       router.push("/auth/login");
     } catch (error: any) {
       setErrors(error.response.data.errors);
@@ -48,6 +50,7 @@ const Register = () => {
           />
         </div>
         <div className="ml-5 col-span-2">
+          <ToastContainer />
           <h3 className="text-3xl font-bold text-slate-700">Register</h3>
           <p className="my-2 text-slate-500">
             Provide your details for get registered.
