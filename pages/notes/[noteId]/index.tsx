@@ -36,8 +36,13 @@ const NoteDetails = () => {
       <Layout>
         <div className="relative h-full">
           <div>
-            <h2 className="text-2xl font-semibold">{note.title}</h2>
-            <div dangerouslySetInnerHTML={{ __html: note.content }}></div>
+            <h2 className="text-2xl font-semibold border-b-2 pb-2">
+              {note.title}
+            </h2>
+            <div
+              className="mt-5"
+              dangerouslySetInnerHTML={{ __html: note.content }}
+            ></div>
           </div>
           <div className="fixed bg-blue-500 cursor-pointer w-12 h-12 flex items-center justify-center right-10 bottom-10 rounded-full duration-300 group">
             <BsThreeDotsVertical className="text-white" />

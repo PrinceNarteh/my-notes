@@ -10,10 +10,10 @@ export const getNotes = async () => {
   }
 };
 
-export const updateNote = async (id: string, data: Partial<INote>) => {
+export const updateNote = async (data: Partial<INote>) => {
   try {
-    const res = await httpClient.patch(`/notes/${id}`, data);
-    return res.data.notes;
+    const res = await httpClient.patch(`/notes/${data._id}`, data);
+    return res.data.note;
   } catch (error) {
     return error;
   }

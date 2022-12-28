@@ -65,7 +65,7 @@ const SideBar = ({
             href={"/notes/add"}
             className="bg-blue-500 w-full mt-5 py-1 rounded-full flex items-center justify-center"
           >
-            <IoMdAdd className="inline-block" />
+            <IoMdAdd className="" />
             <span
               className={`whitespace-pre ${
                 !open && "translate-x-10 opacity-0 invisible"

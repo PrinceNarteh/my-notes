@@ -1,9 +1,13 @@
 import dynamic from "next/dynamic";
-import React, { FormEvent, useState } from "react";
+import { useRouter } from "next/router";
+import { FormEvent, useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import { httpClient } from "../services/httpClient";
-import axios from "axios";
 import { INote } from "../types";
+import { useDispatch } from "react-redux";
+import { replaceNote } from "../state/features/notes/noteSlice";
+import { updateNote } from "../services/notes";
+import { toast, ToastContainer } from "react-toastify";
 
 const modules = {
   toolbar: [
@@ -48,6 +52,8 @@ const Form = ({ selectedNote }: { selectedNote?: INote }) => {
     content: selectedNote?.content || "",
   });
   const [error, setError] = useState("");
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   const handleQuillChange = (value: string) =>
     setNote((prevState) => ({
@@ -58,13 +64,14 @@ const Form = ({ selectedNote }: { selectedNote?: INote }) => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      let res;
       if (note._id) {
-        res = await axios.patch("http://localhost:3000/api/notes", note);
+        let res = await updateNote(note);
+        dispatch(replaceNote(res));
+        toast.success("Update successful");
+        router.push(`/notes/${res._id}`);
       } else {
-        res = await axios.post("http://localhost:3000/api/notes", note);
+        await httpClient.post("/notes", note);
       }
-      console.log(res);
     } catch (error: any) {
       console.log(error);
       setError(error.message);
@@ -73,6 +80,7 @@ const Form = ({ selectedNote }: { selectedNote?: INote }) => {
 
   return (
     <div>
+      <ToastContainer />
       <h3 className="text-center text-3xl mt-5 font-semibold text-blue-800">
         {note._id ? "Edit" : "Add"} Note
       </h3>
