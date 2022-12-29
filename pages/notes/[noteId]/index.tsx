@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -8,6 +10,7 @@ import { useSelector } from "react-redux";
 import Layout from "../../../components/Layout";
 import { deleteNote } from "../../../services/notes";
 import { selectAllNotes } from "../../../state/features/notes/noteSlice";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 
 const NoteDetails = () => {
   const router = useRouter();
@@ -35,10 +38,17 @@ const NoteDetails = () => {
     return (
       <Layout>
         <div className="relative h-full">
-          <div>
+          <div className="relative">
             <h2 className="text-2xl font-semibold border-b-2 pb-2">
               {note.title}
             </h2>
+            <div className="absolute right-0 top-1 cursor-pointer">
+              {note.favorite ? (
+                <AiFillHeart className="text-red-500 text-3xl" />
+              ) : (
+                <AiOutlineHeart className="text-red-500 text-3xl" />
+              )}
+            </div>
             <div
               className="mt-5"
               dangerouslySetInnerHTML={{ __html: note.content }}
