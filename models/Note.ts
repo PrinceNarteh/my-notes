@@ -10,6 +10,14 @@ const NoteSchema = new mongoose.Schema(
       type: String,
       required: [true, "Content is a required field."],
     },
+    favorite: {
+      type: Boolean,
+      default: false,
+    },
+    trash: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

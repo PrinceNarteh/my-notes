@@ -5,7 +5,7 @@ import Main from "../components/Main";
 import Preview from "../components/Preview";
 import SideBar from "../components/SideBar";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({ children }: { children?: React.ReactNode }) {
   const [open, setOpen] = useState(true);
   const { status } = useSession({ required: true });
 

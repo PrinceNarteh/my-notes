@@ -1,6 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import db from "../../../config/dbConnect";
-import Note from "../../../models/Note";
+import db from "../../../../config/dbConnect";
+import Note from "../../../../models/Note";
 
 const getNote = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

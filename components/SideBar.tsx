@@ -72,9 +72,8 @@ const SideBar = ({
             </h3>
             <ul className={`space-y-1`}>
               {links.map((link, index) => (
-                <Link href={link.link}>
+                <Link href={link.link} key={index}>
                   <li
-                    key={index}
                     className={`py-1.5 rounded-md flex items-center gap-3.5 cursor-pointer ${
                       open && "pl-3 hover:bg-blue-500"
                     } duration-300`}
