@@ -31,6 +31,20 @@ export default NextAuth({
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token._id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token, user }) {
+      if (session.user) {
+        session.user._id = token?._id as string;
+      }
+      return session;
+    },
+  },
   pages: {
     signIn: "/auth/login",
   },

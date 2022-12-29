@@ -1,7 +1,7 @@
 import React from "react";
 import { BsBell } from "react-icons/bs";
 import { formatDistance } from "date-fns";
-import { INote } from "../types";
+import { INote } from "../types/note";
 import Link from "next/link";
 
 interface IPreviewCardProps {

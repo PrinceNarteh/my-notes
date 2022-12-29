@@ -3,6 +3,7 @@ export interface INote {
   title: string;
   content: string;
   favorite: boolean;
+  trash: boolean;
   createdAt: string;
   updatedAt: string;
 }

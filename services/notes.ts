@@ -1,4 +1,4 @@
-import { INote } from "../types";
+import { INote } from "../types/note";
 import { httpClient } from "./httpClient";
 
 export const getNotes = async () => {

@@ -1,4 +1,5 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import { getSession } from "next-auth/react";
 import db from "../../../../config/dbConnect";
 import Note from "../../../../models/Note";
 
@@ -6,6 +7,11 @@ const handler: NextApiHandler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
+  const session = await getSession({ req });
+
+  if (!session) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
   const { method } = req;
 
   if (method !== "PATCH") {

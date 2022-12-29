@@ -18,6 +18,10 @@ const NoteSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    author: {
+      type: mongoose.Types.ObjectId,
+      required: [true, "Author ID is required"],
+    },
   },
   {
     timestamps: true,

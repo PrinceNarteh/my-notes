@@ -2,7 +2,7 @@
 
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
-import { INote } from "../../../types";
+import { INote } from "../../../types/note";
 import { RootState } from "../../store";
 
 export interface NoteState {
@@ -21,7 +21,9 @@ export const noteSlice = createSlice({
   reducers: {
     setNotes: (state, action: PayloadAction<INote[]>) => {
       state.notes = action.payload;
-      state.filteredNotes = action.payload;
+      state.filteredNotes = action.payload.filter(
+        (note) => note.trash !== true
+      );
     },
     addNote: (state, action: PayloadAction<INote>) => {
       state.notes.push(action.payload);
@@ -42,18 +44,18 @@ export const noteSlice = createSlice({
     filterNotes: (state, action: PayloadAction<string>) => {
       switch (action.payload) {
         case "all":
-          state.filteredNotes = state.notes;
+          state.filteredNotes = state.notes.filter(
+            (note) => note.trash !== true
+          );
           break;
         case "favorites":
           const favoriteNotes = state.notes.filter(
-            (note) => note.favorite === true
+            (note) => note.favorite === true && note.trash !== true
           );
           state.filteredNotes = favoriteNotes;
           break;
         case "trash":
-          const trashNotes = state.notes.filter(
-            (note) => note.favorite === true
-          );
+          const trashNotes = state.notes.filter((note) => note.trash === true);
           state.filteredNotes = trashNotes;
           break;
         default:
@@ -64,8 +66,11 @@ export const noteSlice = createSlice({
     searchNote: (state, action: PayloadAction<string>) => {
       const foundNotes = state.notes.filter(
         (note) =>
-          note.title.toLowerCase().includes(action.payload.toLowerCase()) ||
-          note.content.toLowerCase().includes(action.payload.toLowerCase())
+          (note.title.toLowerCase().includes(action.payload.toLowerCase()) ||
+            note.content
+              .toLowerCase()
+              .includes(action.payload.toLowerCase())) &&
+          note.trash !== true
       );
       state.filteredNotes = foundNotes;
     },

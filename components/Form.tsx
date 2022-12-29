@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import { httpClient } from "../services/httpClient";
-import { INote } from "../types";
+import { INote } from "../types/note";
 import { useDispatch } from "react-redux";
 import { replaceNote } from "../state/features/notes/noteSlice";
 import { updateNote } from "../services/notes";
