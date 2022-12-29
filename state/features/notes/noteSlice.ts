@@ -64,8 +64,8 @@ export const noteSlice = createSlice({
     searchNote: (state, action: PayloadAction<string>) => {
       const foundNotes = state.notes.filter(
         (note) =>
-          note.title.includes(action.payload) ||
-          note.content.includes(action.payload)
+          note.title.toLowerCase().includes(action.payload.toLowerCase()) ||
+          note.content.toLowerCase().includes(action.payload.toLowerCase())
       );
       state.filteredNotes = foundNotes;
     },
@@ -73,5 +73,12 @@ export const noteSlice = createSlice({
 });
 
 export const selectAllNotes = (state: RootState) => state.notes;
-export const { addNote, deleteNote, replaceNote, setNotes } = noteSlice.actions;
+export const {
+  addNote,
+  deleteNote,
+  replaceNote,
+  setNotes,
+  filterNotes,
+  searchNote,
+} = noteSlice.actions;
 export default noteSlice.reducer;

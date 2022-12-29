@@ -1,11 +1,19 @@
+import { useEffect, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { RiSearchLine } from "react-icons/ri";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectAllNotes } from "../state/features/notes/noteSlice";
 import PreviewCard from "./PreviewCard";
+import { searchNote } from "../state/features/notes/noteSlice";
 
 const Preview = ({ open }: { open: boolean }) => {
+  const [searchWord, setSearchWord] = useState<string>("");
   const notesSelector = useSelector(selectAllNotes);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(searchNote(searchWord));
+  }, [searchWord]);
 
   return (
     <div
@@ -14,20 +22,14 @@ const Preview = ({ open }: { open: boolean }) => {
       }`}
     >
       {/* Search Bar */}
-      <div className="flex gap-2 items-center">
-        <div className="flex-1 flex items-center bg-gray-700 rounded-full py-1 px-2 gap-2">
-          <RiSearchLine />
-          <input
-            type="search"
-            placeholder="Search..."
-            className="bg-transparent w-full outline-none"
-          />
-        </div>
-        <div className="">
-          <button className="inline-flex items-center justify-center w-8 h-8 bg-blue-500 rounded-full">
-            <IoMdAdd />
-          </button>
-        </div>
+      <div className="flex-1 flex items-center bg-gray-700 rounded-full py-1 px-2 gap-2">
+        <RiSearchLine />
+        <input
+          type="search"
+          placeholder="Search..."
+          className="bg-transparent w-full outline-none"
+          onChange={(e) => setSearchWord(e.target.value)}
+        />
       </div>
 
       <h2 className="font-bold text-gray-500 mt-5 ml-6 text-2xl">All Notes</h2>
