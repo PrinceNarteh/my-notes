@@ -7,7 +7,7 @@ import SideBar from "../components/SideBar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(true);
-  const { data: session, status } = useSession({ required: true });
+  const { status } = useSession({ required: true });
 
   if (status === "loading") {
     console.log("Loading...");

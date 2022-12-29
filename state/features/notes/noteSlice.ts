@@ -7,10 +7,12 @@ import { RootState } from "../../store";
 
 export interface NoteState {
   notes: INote[];
+  filteredNotes: INote[];
 }
 
 const initialState: NoteState = {
   notes: [],
+  filteredNotes: [],
 };
 
 export const noteSlice = createSlice({
@@ -19,6 +21,7 @@ export const noteSlice = createSlice({
   reducers: {
     setNotes: (state, action: PayloadAction<INote[]>) => {
       state.notes = action.payload;
+      state.filteredNotes = action.payload;
     },
     addNote: (state, action: PayloadAction<INote>) => {
       state.notes.push(action.payload);
@@ -35,6 +38,36 @@ export const noteSlice = createSlice({
         (note) => note._id !== action.payload
       );
       state.notes = newState;
+    },
+    filterNotes: (state, action: PayloadAction<string>) => {
+      switch (action.payload) {
+        case "all":
+          state.filteredNotes = state.notes;
+          break;
+        case "favorites":
+          const favoriteNotes = state.notes.filter(
+            (note) => note.favorite === true
+          );
+          state.filteredNotes = favoriteNotes;
+          break;
+        case "trash":
+          const trashNotes = state.notes.filter(
+            (note) => note.favorite === true
+          );
+          state.filteredNotes = trashNotes;
+          break;
+        default:
+          state.filteredNotes = state.notes;
+          break;
+      }
+    },
+    searchNote: (state, action: PayloadAction<string>) => {
+      const foundNotes = state.notes.filter(
+        (note) =>
+          note.title.includes(action.payload) ||
+          note.content.includes(action.payload)
+      );
+      state.filteredNotes = foundNotes;
     },
   },
 });

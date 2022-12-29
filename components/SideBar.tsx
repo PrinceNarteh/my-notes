@@ -1,40 +1,27 @@
-import Image from "next/image";
+import { signOut } from "next-auth/react";
+import Link from "next/link";
 import React, { Dispatch, SetStateAction } from "react";
-import { BiHighlight } from "react-icons/bi";
-import { BsClock } from "react-icons/bs";
-import { FaTasks } from "react-icons/fa";
-import { FiBell } from "react-icons/fi";
+import { FaTrash } from "react-icons/fa";
 import { GiNotebook } from "react-icons/gi";
+import { IoMdAdd } from "react-icons/io";
 import { MdArrowBackIosNew, MdOutlineFavoriteBorder } from "react-icons/md";
 import { TbLogout } from "react-icons/tb";
-import { signOut } from "next-auth/react";
-import { IoMdAdd } from "react-icons/io";
-import Link from "next/link";
 
 const links = [
   {
     icons: GiNotebook,
     label: "All Notes",
-  },
-  {
-    icons: FiBell,
-    label: "Reminders",
-  },
-  {
-    icons: FaTasks,
-    label: "Tasks",
+    link: "/notes/all",
   },
   {
     icons: MdOutlineFavoriteBorder,
     label: "Favorites",
+    link: "/notes/favorites",
   },
   {
-    icons: BiHighlight,
-    label: "Highlights",
-  },
-  {
-    icons: BsClock,
-    label: "Activities",
+    icons: FaTrash,
+    label: "Trash",
+    link: "/notes/trash",
   },
 ];
 
@@ -85,26 +72,30 @@ const SideBar = ({
             </h3>
             <ul className={`space-y-1`}>
               {links.map((link, index) => (
-                <li
-                  key={index}
-                  className={`py-1.5 rounded-md flex items-center gap-3.5 cursor-pointer ${
-                    open && "pl-3 hover:bg-blue-500"
-                  } duration-300`}
-                >
-                  <div
-                    className={`${open ? "text-lg" : "text-xl"} duration-300`}
-                  >
-                    {React.createElement(link.icons)}
-                  </div>
-                  <h3
-                    style={{ transitionDelay: `${open && index + 1 + "00ms"}` }}
-                    className={`whitespace-pre ${
-                      !open && "translate-x-10 opacity-0 invisible"
+                <Link href={link.link}>
+                  <li
+                    key={index}
+                    className={`py-1.5 rounded-md flex items-center gap-3.5 cursor-pointer ${
+                      open && "pl-3 hover:bg-blue-500"
                     } duration-300`}
                   >
-                    {link.label}
-                  </h3>
-                </li>
+                    <div
+                      className={`${open ? "text-lg" : "text-xl"} duration-300`}
+                    >
+                      {React.createElement(link.icons)}
+                    </div>
+                    <h3
+                      style={{
+                        transitionDelay: `${open && index + 1 + "00ms"}`,
+                      }}
+                      className={`whitespace-pre ${
+                        !open && "translate-x-10 opacity-0 invisible"
+                      } duration-300`}
+                    >
+                      {link.label}
+                    </h3>
+                  </li>
+                </Link>
               ))}
             </ul>
           </div>
