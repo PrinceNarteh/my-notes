@@ -21,7 +21,7 @@ const handler: NextApiHandler = async (
     note = await Note.findByIdAndUpdate(
       req.query.noteId,
       {
-        $set: { favorite: !note.favorite },
+        $set: { trash: !note.trash },
       },
       { new: true }
     );
