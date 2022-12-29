@@ -9,6 +9,14 @@ export const getNotes = async () => {
     return error;
   }
 };
+export const createNote = async (data: Partial<INote>) => {
+  try {
+    const res = await httpClient.post(`/notes`, data);
+    return res.data.note;
+  } catch (error) {
+    return error;
+  }
+};
 
 export const updateNote = async (data: Partial<INote>) => {
   try {

@@ -2,16 +2,14 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 import "react-quill/dist/quill.snow.css";
-import { httpClient } from "../services/httpClient";
-import { INote } from "../types/note";
 import { useDispatch } from "react-redux";
-import { replaceNote } from "../state/features/notes/noteSlice";
-import { updateNote } from "../services/notes";
 import { toast, ToastContainer } from "react-toastify";
+import { createNote, updateNote } from "../services/notes";
+import { addNote, replaceNote } from "../state/features/notes/noteSlice";
+import { INote } from "../types/note";
 
 const modules = {
   toolbar: [
-    //[{ 'font': [] }],
     [{ header: [1, 2, false] }],
     ["bold", "italic", "underline", "strike", "blockquote"],
     [
@@ -70,10 +68,12 @@ const Form = ({ selectedNote }: { selectedNote?: INote }) => {
         toast.success("Update successful");
         router.push(`/notes/${res._id}`);
       } else {
-        await httpClient.post("/notes", note);
+        let res = await createNote(note);
+        toast.success("Note created successful");
+        dispatch(addNote(res));
+        router.push(`/`);
       }
     } catch (error: any) {
-      console.log(error);
       setError(error.message);
     }
   };
