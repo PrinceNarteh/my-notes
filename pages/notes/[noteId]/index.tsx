@@ -6,18 +6,33 @@ import { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaTrash } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../../components/Layout";
-import { deleteNote } from "../../../services/notes";
-import { selectAllNotes } from "../../../state/features/notes/noteSlice";
+import { deleteNote, toggleFavorite } from "../../../services/notes";
+import {
+  replaceNote,
+  selectAllNotes,
+} from "../../../state/features/notes/noteSlice";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 
 const NoteDetails = () => {
   const router = useRouter();
   const allNotes = useSelector(selectAllNotes);
   const [error, setError] = useState("");
+  const dispatch = useDispatch();
 
   const note = allNotes.notes.find((note) => note._id === router.query.noteId);
+
+  const handleToggleFavorite = async (id: string) => {
+    try {
+      const res = await toggleFavorite(id);
+      console.log(res);
+      dispatch(replaceNote(res));
+      router.push(`/notes/${res._id}`);
+    } catch (error: any) {
+      setError(error.message);
+    }
+  };
 
   const handleDelete = async (id: string) => {
     try {
@@ -42,7 +57,10 @@ const NoteDetails = () => {
             <h2 className="text-2xl font-semibold border-b-2 pb-2">
               {note.title}
             </h2>
-            <div className="absolute right-0 top-1 cursor-pointer">
+            <div
+              className="absolute right-0 top-1 cursor-pointer"
+              onClick={() => handleToggleFavorite(note._id!)}
+            >
               {note.favorite ? (
                 <AiFillHeart className="text-red-500 text-3xl" />
               ) : (

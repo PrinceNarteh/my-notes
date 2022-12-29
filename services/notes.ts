@@ -35,3 +35,12 @@ export const deleteNote = async (id: string) => {
     return error;
   }
 };
+
+export const toggleFavorite = async (id: string) => {
+  try {
+    const res = await httpClient.patch(`/notes/${id}/toggle-favorite`);
+    return res.data.note;
+  } catch (error: any) {
+    return error.message;
+  }
+};
