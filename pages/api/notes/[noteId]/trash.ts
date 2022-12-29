@@ -2,6 +2,7 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import db from "../../../../config/dbConnect";
 import Note from "../../../../models/Note";
+import { checkAuthor } from "../../../../utils/checkAuthor";
 
 const handler: NextApiHandler = async (
   req: NextApiRequest,
@@ -21,9 +22,13 @@ const handler: NextApiHandler = async (
 
   try {
     let note = await Note.findById(req.query.noteId);
+
     if (!note) {
       return res.status(404).json({ error: "Note not found" });
     }
+
+    checkAuthor(res, note, session);
+
     note = await Note.findByIdAndUpdate(
       req.query.noteId,
       {
