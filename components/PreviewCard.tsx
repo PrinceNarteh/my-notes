@@ -14,10 +14,11 @@ const PreviewCard = ({ note }: IPreviewCardProps) => {
     addSuffix: true,
   });
   const { query } = useRouter();
-  const category = query.category;
+  let category = query.category;
+  category = category === undefined ? "all" : category;
 
   return (
-    <Link href={`/${query.category}/${note._id}`}>
+    <Link href={`/${category}/${note._id}`}>
       <div className="relative px-1 py-2 ml-5 space-y-1 rounded-sm hover:bg-gray-700 cursor-pointer hover:border hover:border-gray-600">
         <span className="block absolute -left-5 top-4 w-2.5 h-2.5 bg-orange-500 rounded-full items-center"></span>
         <h3 className="font-semibold text-sm">{note.title}</h3>

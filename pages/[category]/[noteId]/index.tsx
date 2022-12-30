@@ -32,7 +32,8 @@ const NoteDetails = () => {
 
   const note = allNotes.notes.find((note) => note._id === router.query.noteId);
 
-  const category = query.category as string;
+  let category = query.category as string;
+  category = category === undefined ? "all" : category;
 
   const handleToggleFavorite = async (id: string) => {
     try {

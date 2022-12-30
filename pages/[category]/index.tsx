@@ -9,7 +9,8 @@ const AllNotes = () => {
   const dispatch = useDispatch();
   const { query } = useRouter();
 
-  const category = query.category as string;
+  let category = query.category as string;
+  category = category === undefined ? "all" : category;
 
   console.log(category);
 
