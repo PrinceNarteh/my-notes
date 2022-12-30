@@ -27,7 +27,7 @@ const handler: NextApiHandler = async (
       return res.status(404).json({ error: "Note not found" });
     }
 
-    checkAuthor(res, note, session);
+    return checkAuthor(res, note, session);
 
     note = await Note.findByIdAndUpdate(
       req.query.noteId,

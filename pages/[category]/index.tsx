@@ -1,19 +1,21 @@
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+
 import Layout from "../../components/Layout";
 import { filterNotes } from "../../state/features/notes/noteSlice";
 
 const AllNotes = () => {
-  const { pathname } = useRouter();
-
   const dispatch = useDispatch();
+  const { query } = useRouter();
 
-  const path = pathname.split("/")[2];
+  const category = query.category as string;
+
+  console.log(category);
 
   useEffect(() => {
-    dispatch(filterNotes(path));
-  }, []);
+    dispatch(filterNotes(category));
+  }, [category]);
 
   return <Layout />;
 };

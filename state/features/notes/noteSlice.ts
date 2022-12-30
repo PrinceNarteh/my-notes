@@ -59,7 +59,9 @@ export const noteSlice = createSlice({
           state.filteredNotes = trashNotes;
           break;
         default:
-          state.filteredNotes = state.notes;
+          state.filteredNotes = state.notes.filter(
+            (note) => note.trash !== true
+          );
           break;
       }
     },

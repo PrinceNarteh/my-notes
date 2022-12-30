@@ -11,17 +11,17 @@ const links = [
   {
     icons: GiNotebook,
     label: "All Notes",
-    link: "/notes/all",
+    link: "/all",
   },
   {
     icons: MdOutlineFavoriteBorder,
     label: "Favorites",
-    link: "/notes/favorites",
+    link: "/favorites",
   },
   {
     icons: FaTrash,
     label: "Trash",
-    link: "/notes/trash",
+    link: "/trash",
   },
 ];
 

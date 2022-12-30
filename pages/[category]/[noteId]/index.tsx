@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaTrash } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../../components/Layout";
 import { trashNote, toggleFavorite } from "../../../services/notes";
 import {
+  filterNotes,
   replaceNote,
   selectAllNotes,
 } from "../../../state/features/notes/noteSlice";
@@ -28,7 +29,7 @@ const NoteDetails = () => {
       const res = await toggleFavorite(id);
       console.log(res);
       dispatch(replaceNote(res));
-      router.push(`/notes/${res._id}`);
+      router.push(`/${router.query.category}/${res._id}`);
     } catch (error: any) {
       setError(error.message);
     }
@@ -42,6 +43,15 @@ const NoteDetails = () => {
       setError(error.message);
     }
   };
+  const { query } = useRouter();
+
+  const category = query.category as string;
+
+  console.log(category);
+
+  useEffect(() => {
+    dispatch(filterNotes(category));
+  }, [category]);
 
   if (!note) {
     <Layout>
