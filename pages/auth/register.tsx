@@ -6,6 +6,7 @@ import register from "../../assets/images/register.jpg";
 import InputField from "../../components/InputField";
 import { httpClient } from "../../services/httpClient";
 import { toast, ToastContainer } from "react-toastify";
+import Spinner from "../../components/Spinner";
 
 const Register = () => {
   const [state, setState] = useState({
@@ -16,6 +17,7 @@ const Register = () => {
     confirmPassword: "",
   });
   const [errors, setErrors] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,12 +31,15 @@ const Register = () => {
       return setErrors(["Passwords do not match"]);
     }
 
+    setLoading(true);
     try {
       await httpClient.post("/auth/register", state);
       toast.success("Registration successful");
       router.push("/auth/login");
     } catch (error: any) {
       setErrors(error.response.data.errors);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -97,8 +102,9 @@ const Register = () => {
               name="confirmPassword"
               onChange={handleChange}
             />
-            <button className="w-full bg-slate-700 text-white py-2 rounded mt-2">
-              Register
+            <button className="w-full bg-slate-700 flex justify-center items-center space-x-3 text-white py-2 rounded mt-2">
+              {loading && <Spinner />}{" "}
+              <span className="inline-block">Register</span>
             </button>
           </form>
           <p className="mt-2 text-slate-600 text-center">

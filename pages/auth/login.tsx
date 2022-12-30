@@ -6,6 +6,7 @@ import React, { useState } from "react";
 
 import login from "../../assets/images/login.jpg";
 import InputField from "../../components/InputField";
+import Spinner from "../../components/Spinner";
 
 const Login = () => {
   const [data, setData] = useState({
@@ -13,6 +14,7 @@ const Login = () => {
     password: "",
   });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,10 +23,13 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
     const res = await signIn("credentials", { ...data, redirect: false });
     if (!res?.ok) {
       setError("Invalid credentials");
+      setLoading(false);
     } else {
+      setLoading(false);
       router.push("/");
     }
   };
@@ -57,8 +62,9 @@ const Login = () => {
               type="password"
               onChange={handleChange}
             />
-            <button className="w-full bg-slate-700 text-white py-2 rounded mt-2">
-              Login
+            <button className="w-full bg-slate-700 flex justify-center items-center space-x-3 text-white py-2 rounded mt-2">
+              {loading && <Spinner />}{" "}
+              <span className="inline-block">Login</span>
             </button>
           </form>
           <p className="mt-2 text-slate-600 text-center">
