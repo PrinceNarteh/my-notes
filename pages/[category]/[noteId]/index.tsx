@@ -8,26 +8,35 @@ import { FaTrash } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../../components/Layout";
-import { trashNote, toggleFavorite } from "../../../services/notes";
+import {
+  toggleTrash,
+  deleteNote,
+  toggleFavorite,
+} from "../../../services/notes";
 import {
   filterNotes,
   replaceNote,
+  deleteNote as deleteNoteAction,
   selectAllNotes,
 } from "../../../state/features/notes/noteSlice";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { ImUndo2 } from "react-icons/im";
+import { MdDeleteSweep } from "react-icons/md";
 
 const NoteDetails = () => {
   const router = useRouter();
   const allNotes = useSelector(selectAllNotes);
   const [error, setError] = useState("");
   const dispatch = useDispatch();
+  const { query } = useRouter();
 
   const note = allNotes.notes.find((note) => note._id === router.query.noteId);
+
+  const category = query.category as string;
 
   const handleToggleFavorite = async (id: string) => {
     try {
       const res = await toggleFavorite(id);
-      console.log(res);
       dispatch(replaceNote(res));
       router.push(`/${router.query.category}/${res._id}`);
     } catch (error: any) {
@@ -37,17 +46,33 @@ const NoteDetails = () => {
 
   const handleTrash = async (id: string) => {
     try {
-      await trashNote(id);
+      await toggleTrash(id);
       router.push("/");
     } catch (error: any) {
       setError(error.message);
     }
   };
-  const { query } = useRouter();
 
-  const category = query.category as string;
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteNote(id);
+      dispatch(deleteNoteAction(id));
+      router.push("/trash");
+    } catch (error: any) {
+      setError(error.message);
+    }
+  };
 
-  console.log(category);
+  const handleRestore = async (id: string) => {
+    try {
+      const res = await toggleTrash(id);
+      console.log(res);
+      dispatch(replaceNote(res));
+      router.push("/trash");
+    } catch (error: any) {
+      setError(error.message);
+    }
+  };
 
   useEffect(() => {
     dispatch(filterNotes(category));
@@ -84,19 +109,54 @@ const NoteDetails = () => {
           </div>
           <div className="fixed bg-blue-500 cursor-pointer w-12 h-12 flex items-center justify-center right-10 bottom-10 rounded-full duration-300 group">
             <BsThreeDotsVertical className="text-white" />
-            <div className="hidden absolute bottom-5 space-y-1 pb-10 transition-[display] group-hover:inline-block">
-              <Link href={`/notes/${note._id}/edit`}>
-                <div className="p-4 bg-blue-500 rounded-full duration-300 group-hover:inline-block hover:scale-110">
-                  <FiEdit className="text-white font-bold" />
+            {note.trash ? (
+              <div className="hidden absolute bottom-5 space-y-2 pb-10 transition-[display] group-hover:inline-block">
+                <div className="relative">
+                  <div
+                    className="relative p-4 bg-blue-500 rounded-full duration-300 peer hover:scale-110"
+                    onClick={() => handleRestore(note._id!)}
+                  >
+                    <ImUndo2 className="text-white font-bold" />
+                  </div>
+                  <span className="absolute top-2 right-14 hidden peer-hover:inline-block whitespace-nowrap bg-slate-700 px-2 py-1 rounded text-white">
+                    Restore
+                  </span>
                 </div>
-              </Link>
-              <div
-                className="p-4 bg-blue-500 rounded-full duration-300 hover:scale-110"
-                onClick={() => handleTrash(note._id!)}
-              >
-                <FaTrash className="text-white" />
+                <div className="relative">
+                  <div
+                    className="relative p-4 bg-blue-500 rounded-full duration-300 peer hover:scale-110"
+                    onClick={() => handleDelete(note._id!)}
+                  >
+                    <MdDeleteSweep className="text-white" />
+                  </div>
+                  <span className="absolute top-2 right-14 hidden peer-hover:inline-block whitespace-nowrap bg-slate-700 px-2 py-1 rounded text-white">
+                    Delete
+                  </span>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="hidden absolute bottom-5 space-y-1 pb-10 transition-[display] group-hover:inline-block">
+                <Link href={`/${category}/${note._id}/edit`}>
+                  <div className="relative p-4 bg-blue-500 rounded-full duration-300 peer hover:scale-110">
+                    <FiEdit className="text-white font-bold" />
+                  </div>
+                  <span className="absolute top-2 right-14 hidden peer-hover:inline-block whitespace-nowrap bg-slate-700 px-2 py-1 rounded text-white">
+                    Edit
+                  </span>
+                </Link>
+                <div className="relative">
+                  <div
+                    className="p-4 bg-blue-500 rounded-full duration-300 peer hover:scale-110"
+                    onClick={() => handleTrash(note._id!)}
+                  >
+                    <FaTrash className="text-white" />
+                  </div>
+                  <span className="absolute top-2 right-14 hidden peer-hover:inline-block whitespace-nowrap bg-slate-700 px-2 py-1 rounded text-white">
+                    Trash
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </Layout>

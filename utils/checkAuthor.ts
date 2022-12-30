@@ -7,9 +7,10 @@ export const checkAuthor = (
   note: INote,
   session: Session
 ) => {
-  if (note._id !== session.user._id) {
-    return res
+  if (note.author !== session.user._id) {
+    res
       .status(403)
       .json({ error: "You are not permitted to perform this operation" });
+    return;
   }
 };

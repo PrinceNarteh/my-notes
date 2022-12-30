@@ -4,6 +4,7 @@ export interface INote {
   content: string;
   favorite: boolean;
   trash: boolean;
+  author: string;
   createdAt: string;
   updatedAt: string;
 }

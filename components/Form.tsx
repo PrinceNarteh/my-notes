@@ -79,7 +79,7 @@ const Form = ({ selectedNote }: { selectedNote?: INote }) => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col">
       <ToastContainer />
       <h3 className="text-center text-3xl mt-5 font-semibold text-blue-800">
         {note._id ? "Edit" : "Add"} Note
@@ -117,7 +117,7 @@ const Form = ({ selectedNote }: { selectedNote?: INote }) => {
             formats={formats}
           />
         </div>
-        <div>
+        <div className="absolute right-10 bottom-5">
           <button
             type="submit"
             className="bg-blue-500 text-white px-4 py-2 rounded-full float-right"

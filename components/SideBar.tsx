@@ -49,7 +49,7 @@ const SideBar = ({
       <div className="flex flex-col justify-between h-full pb-5">
         <div>
           <Link
-            href={"/notes/add"}
+            href={"/add"}
             className="bg-blue-500 w-full mt-5 py-1 rounded-full flex items-center justify-center"
           >
             <IoMdAdd className="" />

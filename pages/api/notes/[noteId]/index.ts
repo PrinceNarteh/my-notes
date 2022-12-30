@@ -33,7 +33,12 @@ const updateNote = async (
       res.status(404).json({ error: "Note not found." });
     }
 
-    checkAuthor(res, note, session);
+    if (note.author.toString() !== session.user._id) {
+      res
+        .status(403)
+        .json({ error: "You are not permitted to perform this operation" });
+      return;
+    }
 
     note = await Note.findByIdAndUpdate(req.query.noteId, req.body, {
       new: true,
@@ -58,7 +63,14 @@ const deleteNote = async (
     if (!note) {
       return res.status(404).json({ error: "Note not found" });
     }
-    checkAuthor(res, note, session);
+
+    if (note.author.toString() !== session.user._id) {
+      res
+        .status(403)
+        .json({ error: "You are not permitted to perform this operation" });
+      return;
+    }
+
     await Note.findByIdAndDelete(req.query.noteId);
     await db.disconnect();
     res.status(200).json({ message: "Note deleted successfully" });

@@ -28,7 +28,12 @@ const handler: NextApiHandler = async (
       return res.status(404).json({ error: "Note not found" });
     }
 
-    // return checkAuthor(res, note, session);
+    if (note.author.toString() !== session.user._id) {
+      res
+        .status(403)
+        .json({ error: "You are not permitted to perform this operation" });
+      return;
+    }
 
     note = await Note.findByIdAndUpdate(
       req.query.noteId,
