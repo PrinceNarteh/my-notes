@@ -8,7 +8,7 @@ import { FaTrash } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../../components/Layout";
-import { deleteNote, toggleFavorite } from "../../../services/notes";
+import { trashNote, toggleFavorite } from "../../../services/notes";
 import {
   replaceNote,
   selectAllNotes,
@@ -34,9 +34,9 @@ const NoteDetails = () => {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleTrash = async (id: string) => {
     try {
-      await deleteNote(id);
+      await trashNote(id);
       router.push("/");
     } catch (error: any) {
       setError(error.message);
@@ -82,7 +82,7 @@ const NoteDetails = () => {
               </Link>
               <div
                 className="p-4 bg-blue-500 rounded-full duration-300 hover:scale-110"
-                onClick={() => handleDelete(note._id!)}
+                onClick={() => handleTrash(note._id!)}
               >
                 <FaTrash className="text-white" />
               </div>

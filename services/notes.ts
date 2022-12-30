@@ -27,6 +27,15 @@ export const updateNote = async (data: Partial<INote>) => {
   }
 };
 
+export const trashNote = async (id: string) => {
+  try {
+    const res = await httpClient.patch(`/notes/${id}/trash`);
+    return res.data.notes;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const deleteNote = async (id: string) => {
   try {
     const res = await httpClient.delete(`/notes/${id}`);
