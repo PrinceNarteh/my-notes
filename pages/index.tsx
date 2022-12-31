@@ -1,6 +1,3 @@
-"use client";
-
-import { AxiosResponse } from "axios";
 import { ReactNode, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Layout from "../components/Layout";
@@ -12,7 +9,7 @@ export default function Home({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const notes = async () => {
-      const res = (await getNotes()) as AxiosResponse<any, any>;
+      const res: any = await getNotes();
       if (res.status === 200) {
         dispatch(setNotes(res.data.notes));
       } else {
@@ -21,5 +18,6 @@ export default function Home({ children }: { children: ReactNode }) {
     };
     notes();
   }, []);
+
   return <Layout>{children}</Layout>;
 }
