@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import { NextApiRequest, NextApiResponse } from "next";
 
-import db from "../../../config/dbConnect";
+import dbConnect from "../../../config/dbConnect";
 import User from "../../../models/User";
 import { createUserDto } from "../../../utils/validation";
 
@@ -20,7 +20,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     } else {
       const { email, firstName, lastName, password } = result.data;
       const hashedPassword = await bcrypt.hash(password, 12);
-      await db.connect();
+      await dbConnect();
       const user = await User.create({
         firstName,
         lastName,

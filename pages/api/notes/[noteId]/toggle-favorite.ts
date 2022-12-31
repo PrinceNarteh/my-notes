@@ -1,6 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
-import db from "../../../../config/dbConnect";
+import dbConnect from "../../../../config/dbConnect";
 import Note from "../../../../models/Note";
 import { checkAuthor } from "../../../../utils/checkAuthor";
 
@@ -19,7 +19,7 @@ const handler: NextApiHandler = async (
   if (method !== "PATCH") {
     return res.status(405).json({ error: "Only PATCH method is allowed." });
   }
-  await db.connect();
+  await dbConnect();
 
   try {
     let note = await Note.findById(req.query.noteId);
@@ -45,8 +45,6 @@ const handler: NextApiHandler = async (
     res.status(200).json({ note });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
-  } finally {
-    await db.disconnect();
   }
 };
 

@@ -1,6 +1,6 @@
 import NextAuth from "next-auth/next";
 import Credentials from "next-auth/providers/credentials";
-import db from "../../../config/dbConnect";
+import dbConnect from "../../../config/dbConnect";
 import User from "../../../models/User";
 import bcrypt from "bcryptjs";
 import { loginDto } from "../../../utils/validation";
@@ -19,12 +19,10 @@ export default NextAuth({
           throw new Error("Please provide all info.");
         }
         const { email, password } = result.data;
-        console.log({ email, password });
 
-        await db.connect();
+        await dbConnect();
         const user = await User.findOne({ email });
         console.log(user);
-        await db.disconnect();
 
         if (user && (await bcrypt.compare(password, user.password))) {
           return user;

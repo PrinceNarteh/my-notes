@@ -2,7 +2,7 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { Session } from "next-auth";
 import { getSession } from "next-auth/react";
 
-import db from "../../../config/dbConnect";
+import dbConnect from "../../../config/dbConnect";
 import Note from "../../../models/Note";
 import { formatMongoDBErrors } from "../../../utils/formatMongoDBErrors";
 
@@ -11,9 +11,7 @@ const getNotes = async (
   res: NextApiResponse,
   session: Session
 ) => {
-  await db.connect();
   const notes = await Note.find({ author: session.user._id }).sort({ _id: -1 });
-  await db.disconnect();
   res.status(200).json({ notes });
 };
 
@@ -22,15 +20,12 @@ const createNote = async (
   res: NextApiResponse,
   session: Session
 ) => {
-  await db.connect();
   try {
     const note = await Note.create({ ...req.body, author: session.user._id });
     res.status(200).json({ note });
   } catch (error: any) {
     const errorArr = formatMongoDBErrors(error, "Note");
     res.status(400).json({ errorArr });
-  } finally {
-    await db.disconnect();
   }
 };
 
@@ -45,6 +40,8 @@ const handler: NextApiHandler = async (
   }
 
   const method = req.method;
+
+  await dbConnect();
 
   switch (method) {
     case "GET":

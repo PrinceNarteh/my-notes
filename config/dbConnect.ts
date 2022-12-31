@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI || "";
+const MONGODB_URI = process.env.MONGODB_URI!;
 
 if (!MONGODB_URI) {
   throw new Error(
@@ -14,13 +14,12 @@ if (!MONGODB_URI) {
  * during API Route usage.
  */
 let cached = global.mongoose;
-let isConnected: boolean = false;
 
 if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }
 
-async function connect() {
+async function dbConnect() {
   if (cached.conn) {
     return cached.conn;
   }
@@ -34,28 +33,8 @@ async function connect() {
       return mongoose;
     });
   }
-
-  try {
-    cached.conn = await cached.promise;
-    isConnected = true;
-  } catch (e) {
-    cached.promise = null;
-    throw e;
-  }
-
+  cached.conn = await cached.promise;
   return cached.conn;
 }
 
-async function disconnect() {
-  if (isConnected) {
-    if (process.env.NODE_ENV === "production") {
-      await mongoose.disconnect();
-      isConnected = false;
-    } else {
-      console.log("not disconnected");
-    }
-  }
-}
-
-const db = { connect, disconnect };
-export default db;
+export default dbConnect;
