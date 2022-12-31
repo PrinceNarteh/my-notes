@@ -1,10 +1,10 @@
 import React from "react";
 import { ImSpinner2 } from "react-icons/im";
 
-const Spinner = () => {
+const Spinner = ({ additionalStyle }: { additionalStyle?: string }) => {
   return (
     <div role="status">
-      <ImSpinner2 className="animate-spin" />
+      <ImSpinner2 className={`${additionalStyle} animate-spin`} />
       <span className="sr-only">Loading...</span>
     </div>
   );

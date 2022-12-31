@@ -12,8 +12,6 @@ const AllNotes = () => {
   let category = query.category as string;
   category = category === undefined ? "all" : category;
 
-  console.log(category);
-
   useEffect(() => {
     dispatch(filterNotes(category));
   }, [category]);
