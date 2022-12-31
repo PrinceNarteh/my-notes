@@ -4,7 +4,7 @@ import { httpClient } from "./httpClient";
 export const getNotes = async () => {
   try {
     const res = await httpClient("/notes");
-    return res.data.notes;
+    return res;
   } catch (error) {
     return error;
   }

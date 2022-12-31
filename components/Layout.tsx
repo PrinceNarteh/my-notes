@@ -1,36 +1,22 @@
 import { useSession } from "next-auth/react";
 import Head from "next/head";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState } from "react";
 import Main from "../components/Main";
 import Preview from "../components/Preview";
 import SideBar from "../components/SideBar";
-import { getNotes } from "../services/notes";
-import { setNotes } from "../state/features/notes/noteSlice";
 import Spinner from "./Spinner";
 
 export default function Layout({ children }: { children?: React.ReactNode }) {
   const [open, setOpen] = useState(true);
   const { status } = useSession({ required: true });
-  const dispatch = useDispatch();
 
   if (status === "loading") {
-    console.log("Loading...");
-
     return (
       <div className="h-screen flex justify-center items-center">
         <Spinner additionalStyle="text-5xl" />
       </div>
     );
   }
-
-  useEffect(() => {
-    const notes = async () => {
-      const res = await getNotes();
-      dispatch(setNotes(res));
-    };
-    notes();
-  }, []);
 
   return (
     <>
