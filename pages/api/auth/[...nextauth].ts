@@ -19,9 +19,11 @@ export default NextAuth({
           throw new Error("Please provide all info.");
         }
         const { email, password } = result.data;
+        console.log({ email, password });
 
         await db.connect();
         const user = await User.findOne({ email });
+        console.log(user);
         await db.disconnect();
 
         if (user && (await bcrypt.compare(password, user.password))) {
