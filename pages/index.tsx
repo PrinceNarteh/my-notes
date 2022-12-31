@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import Layout from "../components/Layout";
 import { getNotes } from "../services/notes";
 import { setNotes } from "../state/features/notes/noteSlice";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function Home({ children }: { children: ReactNode }) {
   const dispatch = useDispatch();
@@ -13,11 +14,16 @@ export default function Home({ children }: { children: ReactNode }) {
       if (res.status === 200) {
         dispatch(setNotes(res.data.notes));
       } else {
-        console.log("Error fetching date");
+        toast.error("Error fetching data");
       }
     };
     notes();
   }, []);
 
-  return <Layout>{children}</Layout>;
+  return (
+    <Layout>
+      <ToastContainer />
+      {children}
+    </Layout>
+  );
 }

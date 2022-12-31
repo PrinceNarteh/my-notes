@@ -67,7 +67,6 @@ const NoteDetails = () => {
   const handleRestore = async (id: string) => {
     try {
       const res = await toggleTrash(id);
-      console.log(res);
       dispatch(replaceNote(res));
       router.push("/trash");
     } catch (error: any) {

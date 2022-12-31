@@ -27,7 +27,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         email,
         password: hashedPassword,
       });
-      console.log(user);
       res.status(201).json({ user });
     }
   } catch (error: any) {

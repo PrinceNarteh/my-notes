@@ -22,7 +22,6 @@ export default NextAuth({
 
         await dbConnect();
         const user = await User.findOne({ email });
-        console.log(user);
 
         if (user && (await bcrypt.compare(password, user.password))) {
           return user;
